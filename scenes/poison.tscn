@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://dhv2oiplvi8br"]
+
+[ext_resource type="Script" uid="uid://cjtkbwegwjl2q" path="res://scripts/poison.gd" id="1_6823q"]
+[ext_resource type="Texture2D" uid="uid://d371yhbtdywu8" path="res://weapons/poison.png" id="2_1tvu1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sw2w0"]
+atlas = ExtResource("2_1tvu1")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p87em"]
+atlas = ExtResource("2_1tvu1")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hyima"]
+atlas = ExtResource("2_1tvu1")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8lmd3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sw2w0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p87em")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hyima")
+}],
+"loop": true,
+"name": &"poison",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1tvu1"]
+radius = 48.0
+
+[node name="Poison" type="Area2D" unique_id=1163173372]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_6823q")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=591263344]
+z_index = -1
+scale = Vector2(1.8872817, 1.8872817)
+sprite_frames = SubResource("SpriteFrames_8lmd3")
+animation = &"poison"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1774678910]
+rotation = 1.5707964
+shape = SubResource("CircleShape2D_1tvu1")
+
+[node name="AttackTimer" type="Timer" parent="." unique_id=1296624065]
+autostart = true
+
+[connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
