@@ -1,8 +1,9 @@
 extends CharacterBody2D
 
 @export var speed: float = 75.0
-var health: int = 30
+@export var seed_scene: PackedScene = preload("res://scenes/exp_seed.tscn")
 
+var health: int = 30
 var player: Node2D
 
 func _ready() -> void:
@@ -34,4 +35,7 @@ func _update_animations() -> void:
 func take_damage(amount: int) -> void:
 	health -= amount
 	if health <= 0:
+		var new_seed = seed_scene.instantiate()
+		new_seed.global_position = global_position
+		get_parent().call_deferred("add_child", new_seed)
 		queue_free()

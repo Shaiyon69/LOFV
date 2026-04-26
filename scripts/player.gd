@@ -3,12 +3,33 @@ extends CharacterBody2D
 @export var speed: float = 150.0
 @export var max_health: float = 100.0
 
+var level: int = 1
+var current_exp: int = 0
+var exp_to_next_level: int = 5
 var current_health: float
+
+@onready var hud = $HUD
 
 func _ready() -> void:
 	current_health = max_health
-	%HealthBar.max_value = max_health
-	%HealthBar.value = current_health
+	hud.update_health(current_health, max_health)
+	hud.update_exp(current_exp, exp_to_next_level)
+	hud.update_level(level)
+	
+	hud.upgrade_selected.connect(_apply_upgrade)
+
+func _apply_upgrade(upgrade_name: String) -> void:
+	if upgrade_name == "heal":
+		current_health = max_health
+	elif upgrade_name == "max_hp":
+		max_health += 50.0
+		current_health += 50.0
+	elif upgrade_name == "speed":
+		speed += 25.0
+	elif upgrade_name == "damage":
+		print("Damage upgrade triggered!")
+		
+	hud.update_health(current_health, max_health)
 
 func _physics_process(delta: float) -> void:
 	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
@@ -34,7 +55,25 @@ func _handle_damage(delta: float) -> void:
 		var damage_rate = 10.0
 		current_health -= damage_rate * overlapping_mobs.size() * delta
 		
-		%HealthBar.value = current_health
+		hud.update_health(current_health, max_health)
 		
 		if current_health <= 0.0:
-			print("Player Died!")
+			get_tree().paused = true
+			hud.show_game_over()
+
+func gain_experience(amount: int) -> void:
+	current_exp += amount
+	if current_exp >= exp_to_next_level:
+		level_up()
+	hud.update_exp(current_exp, exp_to_next_level)
+
+func level_up() -> void:
+	current_exp -= exp_to_next_level
+	level += 1
+	exp_to_next_level = int(exp_to_next_level * 1.5)
+	
+	hud.update_exp(current_exp, exp_to_next_level)
+	hud.update_level(level)
+	
+	get_tree().paused = true
+	hud.show_level_up()
