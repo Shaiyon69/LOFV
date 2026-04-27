@@ -15,6 +15,10 @@ run/main_scene="uid://fxcfocx3fc5l"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="uid://by4qawkk7cnq4"
 
+[autoload]
+
+Data="*uid://0jwrdycl1kfp"
+
 [input]
 
 move_up={

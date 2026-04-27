@@ -153,7 +153,12 @@ point_count = 5
 radius = 4.0
 height = 10.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_dqkch"]
+radius = 9.0
+
 [node name="Player" type="CharacterBody2D" unique_id=993828270 groups=["player"]]
+light_mask = 5
+motion_mode = 1
 script = ExtResource("1_g2els")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=603219450]
@@ -188,4 +193,13 @@ shape = SubResource("CapsuleShape2D_g2els")
 [node name="Poison" parent="." unique_id=1163173372 instance=ExtResource("3_qhqgy")]
 visibility_layer = 512
 
+[node name="MagnetZone" type="Area2D" parent="." unique_id=391827114]
+unique_name_in_owner = true
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MagnetZone" unique_id=1473889355]
+shape = SubResource("CircleShape2D_dqkch")
+
 [node name="HUD" parent="." unique_id=273270594 instance=ExtResource("4_dqkch")]
+
+[connection signal="body_entered" from="MagnetZone" to="." method="_on_magnet_zone_area_entered"]

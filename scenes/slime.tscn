@@ -142,12 +142,14 @@ animations = [{
 radius = 6.0
 height = 12.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_p2gj0"]
+radius = 4.0
+
 [node name="Slime" type="CharacterBody2D" unique_id=1571563526]
 collision_layer = 2
-collision_mask = 2
+collision_mask = 0
 motion_mode = 1
 script = ExtResource("1_p2gj0")
-speed = 100.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1488600536]
 position = Vector2(-1, 0)
@@ -156,3 +158,10 @@ animation = &"down"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=824799668]
 shape = SubResource("CapsuleShape2D_8tegq")
+
+[node name="SoftCollision" type="Area2D" parent="." unique_id=1711617799]
+collision_layer = 8
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SoftCollision" unique_id=408669168]
+shape = SubResource("CircleShape2D_p2gj0")

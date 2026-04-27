@@ -5,7 +5,9 @@ signal upgrade_selected(upgrade_name: String)
 var upgrade_pool: Array = [
 	{"id": "max_hp", "text": "+50 Max HP"},
 	{"id": "speed", "text": "+25 Speed"},
-	{"id": "damage", "text": "+15 Damage"}
+	{"id": "damage", "text": "+15 Damage"},
+	{"id": "pickup_range", "text": "+25 Pickup Range"},
+	{"id": "fire_rate", "text": "+10% Fire Rate"}
 ]
 var current_options: Array = []
 
@@ -61,3 +63,9 @@ func _on_upgrade_pressed(index: int) -> void:
 	%LevelUpScreen.visible = false
 	get_tree().paused = false
 	upgrade_selected.emit(current_options[index]["id"])
+
+func update_time(minutes: int, seconds: int) -> void:
+	%TimeLabel.text = "%02d:%02d" % [minutes, seconds]
+
+func update_kills(kills: int) -> void:
+	%KillLabel.text = "💀: " + str(kills)
