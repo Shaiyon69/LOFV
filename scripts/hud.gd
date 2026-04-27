@@ -22,6 +22,7 @@ func _ready() -> void:
 func update_health(current: float, maximum: float) -> void:
 	%HealthBar.max_value = maximum
 	%HealthBar.value = current
+	%HealthLabel.text = str(int(current), "/", int(maximum))
 	
 	if current / maximum <= 0.3:
 		%LowHPWarning.visible = true

@@ -5,9 +5,11 @@ extends CharacterBody2D
 
 var is_invincible: bool = false
 var i_frame_duration: float = 0.2
+
 var level: int = 1
 var current_exp: int = 0
 var exp_to_next_level: int = 5
+
 var current_health: float
 var bonus_damage: int = 0
 var time_survived: float = 0.0
@@ -107,7 +109,6 @@ func gain_experience(amount: int) -> void:
 func level_up() -> void:
 	current_exp -= exp_to_next_level
 	level += 1
-	#exp_to_next_level = int(exp_to_next_level * 1.5)
 	exp_to_next_level = int(5 * (level ** 1.5)) # Experimental polynomial level rq scaling
 	
 	current_health = max_health
