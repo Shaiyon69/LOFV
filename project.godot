@@ -19,6 +19,11 @@ config/icon="uid://by4qawkk7cnq4"
 
 Data="*uid://0jwrdycl1kfp"
 
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+
 [input]
 
 move_up={

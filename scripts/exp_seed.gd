@@ -9,7 +9,8 @@ var max_speed: float = 600.0
 var acceleration: float = 1200.0
 
 func _ready() -> void:
-	body_entered.connect(_on_body_entered)
+	if not body_entered.is_connected(_on_body_entered):
+		body_entered.connect(_on_body_entered)
 
 func _physics_process(delta: float) -> void:
 	if is_magnetic and player:

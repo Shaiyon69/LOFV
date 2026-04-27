@@ -3,6 +3,8 @@ extends CharacterBody2D
 @export var speed: float = 150.0
 @export var max_health: float = 100.0
 
+var is_invincible: bool = false
+var i_frame_duration: float = 0.5
 var level: int = 1
 var current_exp: int = 0
 var exp_to_next_level: int = 5
@@ -44,6 +46,19 @@ func _physics_process(delta: float) -> void:
 func add_kill() -> void:
 	kill_count += 1
 	hud.update_kills(kill_count)
+	
+func trigger_iframes() -> void:
+	is_invincible = true
+	
+	var tween = create_tween()
+	tween.tween_property($AnimatedSprite2D, "modulate:a", 0.3, 0.1)
+	tween.tween_property($AnimatedSprite2D, "modulate:a", 1.0, 0.1)
+	tween.set_loops(int(i_frame_duration / 0.2))
+	
+	await get_tree().create_timer(i_frame_duration).timeout
+	
+	is_invincible = false
+	$AnimatedSprite2D.modulate.a = 1.0
 
 func _update_animations(dir: Vector2) -> void:
 	if dir.length() > 0:
@@ -54,18 +69,28 @@ func _update_animations(dir: Vector2) -> void:
 	else:
 		%AnimatedSprite2D.stop()
 
-func _handle_damage(delta: float) -> void:
+func _handle_damage(_delta: float) -> void:
+	if is_invincible:
+		return
+		
 	var overlapping_mobs = %HurtBox.get_overlapping_bodies()
 	
-	if overlapping_mobs.size() > 0:
-		var damage_rate = 10.0
-		current_health -= damage_rate * overlapping_mobs.size() * delta
-		
-		hud.update_health(current_health, max_health)
-		
-		if current_health <= 0.0:
-			get_tree().paused = true
-			hud.show_game_over()
+	for body in overlapping_mobs:
+		if body.is_in_group("enemy"):
+			var damage_taken = 10
+			
+			if "attack_damage" in body:
+				damage_taken = body.attack_damage
+				
+			current_health -= damage_taken
+			hud.update_health(current_health, max_health)
+			
+			if current_health <= 0.0:
+				get_tree().paused = true
+				hud.show_game_over()
+			else:
+				trigger_iframes()
+			return
 
 func gain_experience(amount: int) -> void:
 	current_exp += amount
