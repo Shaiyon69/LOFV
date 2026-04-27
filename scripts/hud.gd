@@ -31,6 +31,7 @@ func update_health(current: float, maximum: float) -> void:
 func update_exp(current: int, maximum: int) -> void:
 	%ExpBar.max_value = maximum
 	%ExpBar.value = current
+	%ExpLabel.text = str(current, "/", maximum)
 
 func update_level(level: int) -> void:
 	%LevelLabel.text = "Level: " + str(level)
